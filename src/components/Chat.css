@@ -1,0 +1,36 @@
+.chat_container{
+    width: 60%;
+    border: 1px solid gray;
+    margin: auto;
+    height: 99vh;
+    position: relative;
+}
+.chat{
+    height: 85vh;
+    width: 100%;
+    overflow-y: scroll;
+}
+input{
+    width: 99%;
+    padding: 10px 0px;
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+}
+.header{
+    height: 50px;
+    background-color: gray;
+    color: white;
+}
+.header > h1{
+    color: white;
+}
+.msg{
+    margin: 15px 10px;
+    
+}
+.msg > span {
+   border: 1px solid gray;
+   border-radius: 30px;
+   padding: 5px;
+}
