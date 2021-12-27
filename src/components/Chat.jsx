@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Input, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Modal, Button } from 'antd';
+import { Modal, Button,Alert } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import CryptoJS from 'crypto-js'
 import './Chat.css';
@@ -12,6 +12,7 @@ const Chat = () => {
     const [input, setInput]= useState('')
     const [key, setkey] = useState('')
    const [session, setSession] = useState(false)
+   const [error, setError] = useState(false)
    const url = 'http://localhost:8000'
     const {id} = useParams()
     const getSessionName = window.sessionStorage.getItem("name")
@@ -34,6 +35,8 @@ const Chat = () => {
         .then((res)=>{
             setChat(res.data.chat)
             console.log(res.data.chat);
+        }).catch((error)=>{
+            setError(true)
         })
     }
 
@@ -67,6 +70,7 @@ const handleChat = ()=> {
         if(session){
         
             handleGetRequest()
+            setError(false)
         }
         
     },[session])
@@ -81,14 +85,12 @@ const handleChat = ()=> {
     useEffect(()=>{
         if(session){
             handlePostReq()
+            setError(false)
         }
         
     },[chat])
 
-    const showModal = () => {
-        
-      };
-    
+   
       const handleOk = () => {
         setSession(true)
         window.sessionStorage.setItem("name", name );
@@ -97,11 +99,12 @@ const handleChat = ()=> {
       };
     
       const handleCancel = () => {
-        
+        setError(true)
       };
    
     return (
         <>
+        {error&&<Alert message= 'Something is wrong. Try again !' type="error" />}
         {
             session?<div className='chat_container'>
             <div className='header'>
@@ -118,7 +121,7 @@ const handleChat = ()=> {
       <Button onClick={handleChat} type="primary">SEND</Button>
     </Input.Group>
         </div>:
-         <Modal title="Basic Modal" visible={!session} onOk={handleOk} onCancel={handleCancel}>
+         <Modal title="ADD YOUR SECRET KEY" visible={!session} onOk={handleOk} onCancel={handleCancel}>
          <Input placeholder="Enter Your name" onChange={(e)=> setname(e.target.value)} />
          <Input.Password
       placeholder="Enter Secret Key"
